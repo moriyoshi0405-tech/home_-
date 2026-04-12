@@ -4,26 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
+
+/* 🌿 全体 */
 body{
 margin:0;
-font-family:sans-serif;
-background:#f5f5f5;
-padding:20px;
+font-family:'Zen Maru Gothic',sans-serif;
+background:#ffffff;
+color:#333;
 }
 
+/* 🌿 ヘッダー（黒 → 白） */
+.header{
+text-align:center;
+padding:50px 20px 30px;
+background: linear-gradient(180deg, #111 0%, #ffffff 100%);
+color:white;
+}
+
+.header h1{
+font-size:26px;
+font-weight:700;
+margin:0;
+letter-spacing:1px;
+}
+
+.header p{
+font-size:14px;
+opacity:.8;
+margin-top:8px;
+}
+
+/* 🌿 メイン */
+.container{
+max-width:900px;
+margin:-20px auto 0;
+padding:10px 20px 40px;
+}
+
+/* 🌿 グリッド */
 .grid{
 display:grid;
 grid-template-columns: repeat(3, 1fr);
-gap:12px;
+gap:16px;
 }
 
+/* 🌿 カード */
 .card{
 background:white;
-border-radius:12px;
+border-radius:14px;
 padding:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-height:220px;
+box-shadow:0 10px 30px rgba(0,0,0,0.12);
+height:230px;
 position:relative;
 overflow:hidden;
 display:flex;
@@ -31,14 +65,22 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 text-align:center;
+transition:.3s;
 }
 
+.card:hover{
+transform:translateY(-3px);
+box-shadow:0 14px 35px rgba(0,0,0,0.15);
+}
+
+/* 🌿 表紙 */
 .cover{
 width:70px;
 border-radius:6px;
 margin-bottom:6px;
 }
 
+/* 🌿 テキスト */
 .title{
 font-size:12px;
 font-weight:bold;
@@ -50,27 +92,38 @@ opacity:.6;
 margin-bottom:6px;
 }
 
+/* 🌿 ボタン */
 .button{
 font-size:10px;
 padding:6px 10px;
-border-radius:12px;
-background:black;
+border-radius:20px;
+background:#222;
 color:white;
 text-decoration:none;
 margin-top:4px;
 display:inline-block;
+transition:.2s;
+}
+
+.button:hover{
+background:#444;
 }
 
 .subbtn{
-font-size:9px;
-margin-top:4px;
+font-size:10px;
+margin-top:6px;
 cursor:pointer;
-opacity:.7;
+opacity:.6;
 }
 
+.subbtn:hover{
+opacity:1;
+}
+
+/* 🌿 リールテキスト */
 .text{
 font-size:12px;
-line-height:1.4;
+line-height:1.5;
 opacity:0;
 transform:translateY(10px);
 transition:.5s;
@@ -81,12 +134,48 @@ opacity:1;
 transform:translateY(0);
 }
 
+/* 🌿 フッター（白 → 黒） */
+.footer{
+text-align:center;
+padding:40px 20px 60px;
+background: linear-gradient(180deg, #ffffff 0%, #111 100%);
+}
+
+.footer a{
+display:inline-block;
+padding:10px 20px;
+border-radius:25px;
+background:#222;
+color:white;
+text-decoration:none;
+font-size:14px;
+transition:.2s;
+}
+
+.footer a:hover{
+background:#444;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="grid" id="grid"></div>
+<!-- 🌿 ヘッダー -->
+<div class="header">
+  <h1>本との出会いは、たった30秒で変わる</h1>
+  <p>読む前に、ちょっとだけ覗いてみる。</p>
+</div>
+
+<!-- 🌿 メイン -->
+<div class="container">
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- 🌿 フッター -->
+<div class="footer">
+  <a href="ここに一覧ページURL">他の本も見る</a>
+</div>
 
 <script>
 
@@ -111,14 +200,11 @@ fetch(API_URL)
 
 });
 
-
-// 🎬 カード生成（ここが新設計）
 function createReelCard(card, item){
 
   let index = 0;
   let interval = null;
 
-  // 初期表示
   function showIntro(){
 
     clearInterval(interval);
@@ -135,7 +221,6 @@ function createReelCard(card, item){
       <div class="subbtn">▶ 短い紹介を見る</div>
     `;
 
-    // 再生ボタン
     card.querySelector(".subbtn").onclick = startReel;
 
   }
@@ -162,7 +247,7 @@ function createReelCard(card, item){
 
         if(index >= item.reel.length){
           clearInterval(interval);
-          setTimeout(showIntro, 1500); // 最初に戻る
+          setTimeout(showIntro, 1500);
         }
 
       },200);
@@ -174,7 +259,6 @@ function createReelCard(card, item){
 
   }
 
-  // 初期表示実行
   showIntro();
 
 }
