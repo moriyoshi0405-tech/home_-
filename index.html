@@ -44,11 +44,24 @@ margin:-20px auto 0;
 padding:10px 20px 40px;
 }
 
-/* 🌿 グリッド */
+/* 🌿 グリッド（ベース） */
 .grid{
 display:grid;
-grid-template-columns: repeat(3, 1fr);
 gap:16px;
+}
+
+/* 📱 スマホ：自動調整 */
+@media (max-width: 767px){
+.grid{
+grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+}
+
+/* 🖥 PC：3列固定 */
+@media (min-width: 768px){
+.grid{
+grid-template-columns: repeat(3, 1fr);
+}
 }
 
 /* 🌿 カード */
