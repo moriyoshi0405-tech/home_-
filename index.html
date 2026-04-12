@@ -23,18 +23,53 @@ background:white;
 border-radius:12px;
 padding:10px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
+height:220px;
+position:relative;
+overflow:hidden;
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-height:180px;
-position:relative;
-overflow:hidden;
+text-align:center;
+}
+
+.cover{
+width:70px;
+border-radius:6px;
+margin-bottom:6px;
+}
+
+.title{
+font-size:12px;
+font-weight:bold;
+}
+
+.author{
+font-size:10px;
+opacity:.6;
+margin-bottom:6px;
+}
+
+.button{
+font-size:10px;
+padding:6px 10px;
+border-radius:12px;
+background:black;
+color:white;
+text-decoration:none;
+margin-top:4px;
+display:inline-block;
+}
+
+.subbtn{
+font-size:9px;
+margin-top:4px;
+cursor:pointer;
+opacity:.7;
 }
 
 .text{
 font-size:12px;
-text-align:center;
 line-height:1.4;
 opacity:0;
 transform:translateY(10px);
@@ -44,13 +79,6 @@ transition:.5s;
 .text.show{
 opacity:1;
 transform:translateY(0);
-}
-
-.title{
-position:absolute;
-bottom:6px;
-font-size:10px;
-opacity:.6;
 }
 
 </style>
@@ -75,50 +103,79 @@ fetch(API_URL)
     const card = document.createElement("div");
     card.className = "card";
 
-    const text = document.createElement("div");
-    text.className = "text";
-
-    const title = document.createElement("div");
-    title.className = "title";
-    title.innerText = item.title;
-
-    card.appendChild(text);
-    card.appendChild(title);
     grid.appendChild(card);
 
-    createReel(text, item.reel);
+    createReelCard(card, item);
 
   });
 
 });
 
 
-// 🎬 リール生成関数（ここが核心）
-function createReel(textEl, scenes){
+// 🎬 カード生成（ここが新設計）
+function createReelCard(card, item){
 
   let index = 0;
+  let interval = null;
 
-  function show(){
+  // 初期表示
+  function showIntro(){
 
-    textEl.classList.remove("show");
+    clearInterval(interval);
 
-    setTimeout(()=>{
+    card.innerHTML = `
+      <img src="${item.image}" class="cover">
+      <div class="title">${item.title}</div>
+      <div class="author">${item.author}</div>
 
-      textEl.innerHTML = scenes[index] || "";
-      textEl.classList.add("show");
+      <a href="${item.url}" target="_blank" class="button">
+        感想記事を読む
+      </a>
 
-      index++;
+      <div class="subbtn">▶ 短い紹介を見る</div>
+    `;
 
-      if(index >= scenes.length){
-        index = 0; // ループ
-      }
-
-    },200);
+    // 再生ボタン
+    card.querySelector(".subbtn").onclick = startReel;
 
   }
 
-  show();
-  setInterval(show, 3000);
+  function startReel(){
+
+    const text = document.createElement("div");
+    text.className = "text";
+    card.innerHTML = "";
+    card.appendChild(text);
+
+    index = 0;
+
+    function show(){
+
+      text.classList.remove("show");
+
+      setTimeout(()=>{
+
+        text.innerHTML = item.reel[index] || "";
+        text.classList.add("show");
+
+        index++;
+
+        if(index >= item.reel.length){
+          clearInterval(interval);
+          setTimeout(showIntro, 1500); // 最初に戻る
+        }
+
+      },200);
+
+    }
+
+    show();
+    interval = setInterval(show, 3000);
+
+  }
+
+  // 初期表示実行
+  showIntro();
 
 }
 
