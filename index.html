@@ -49,14 +49,14 @@ display:grid;
 gap:16px;
 }
 
-/* 📱 スマホ */
+/* 📱 スマホ：2列固定 */
 @media (max-width: 767px){
 .grid{
-grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+grid-template-columns: repeat(2, 1fr);
 }
 }
 
-/* 🖥 PC */
+/* 🖥 PC：3列固定 */
 @media (min-width: 768px){
 .grid{
 grid-template-columns: repeat(3, 1fr);
@@ -69,7 +69,7 @@ background:white;
 border-radius:14px;
 padding:10px;
 box-shadow:0 10px 30px rgba(0,0,0,0.12);
-height:180px; /* ←少し小さくしてスクロール対策 */
+height:180px;
 display:flex;
 flex-direction:column;
 align-items:center;
@@ -182,9 +182,9 @@ fetch(API_URL)
 
   const grid = document.getElementById("grid");
 
-  // 🔥 ここが今回の重要ポイント
+  // 🔥 表示数制御（スマホ4件 / PC6件）
   const isMobile = window.innerWidth <= 767;
-  const displayCount = isMobile ? 3 : 6;
+  const displayCount = isMobile ? 4 : 6;
 
   data.slice(0, displayCount).forEach(item => {
 
