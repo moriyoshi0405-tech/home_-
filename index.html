@@ -16,7 +16,7 @@ background:#ffffff;
 color:#333;
 }
 
-/* 🌿 ヘッダー（黒 → 白） */
+/* 🌿 ヘッダー */
 .header{
 text-align:center;
 padding:50px 20px 30px;
@@ -28,7 +28,6 @@ color:white;
 font-size:26px;
 font-weight:700;
 margin:0;
-letter-spacing:1px;
 }
 
 .header p{
@@ -41,23 +40,23 @@ margin-top:8px;
 .container{
 max-width:900px;
 margin:-20px auto 0;
-padding:10px 20px 40px;
+padding:10px 20px 30px;
 }
 
-/* 🌿 グリッド（ベース） */
+/* 🌿 グリッド */
 .grid{
 display:grid;
 gap:16px;
 }
 
-/* 📱 スマホ：自動調整 */
+/* 📱 スマホ */
 @media (max-width: 767px){
 .grid{
 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 }
 
-/* 🖥 PC：3列固定 */
+/* 🖥 PC */
 @media (min-width: 768px){
 .grid{
 grid-template-columns: repeat(3, 1fr);
@@ -70,9 +69,7 @@ background:white;
 border-radius:14px;
 padding:10px;
 box-shadow:0 10px 30px rgba(0,0,0,0.12);
-height:230px;
-position:relative;
-overflow:hidden;
+height:180px; /* ←少し小さくしてスクロール対策 */
 display:flex;
 flex-direction:column;
 align-items:center;
@@ -83,60 +80,50 @@ transition:.3s;
 
 .card:hover{
 transform:translateY(-3px);
-box-shadow:0 14px 35px rgba(0,0,0,0.15);
 }
 
 /* 🌿 表紙 */
 .cover{
-width:70px;
+width:60px;
 border-radius:6px;
 margin-bottom:6px;
 }
 
 /* 🌿 テキスト */
 .title{
-font-size:12px;
+font-size:11px;
 font-weight:bold;
 }
 
 .author{
-font-size:10px;
+font-size:9px;
 opacity:.6;
 margin-bottom:6px;
 }
 
 /* 🌿 ボタン */
 .button{
-font-size:10px;
-padding:6px 10px;
+font-size:9px;
+padding:5px 8px;
 border-radius:20px;
 background:#222;
 color:white;
 text-decoration:none;
 margin-top:4px;
 display:inline-block;
-transition:.2s;
-}
-
-.button:hover{
-background:#444;
 }
 
 .subbtn{
-font-size:10px;
+font-size:9px;
 margin-top:6px;
 cursor:pointer;
 opacity:.6;
 }
 
-.subbtn:hover{
-opacity:1;
-}
-
-/* 🌿 リールテキスト */
+/* 🌿 リール */
 .text{
-font-size:12px;
-line-height:1.5;
+font-size:11px;
+line-height:1.4;
 opacity:0;
 transform:translateY(10px);
 transition:.5s;
@@ -147,7 +134,7 @@ opacity:1;
 transform:translateY(0);
 }
 
-/* 🌿 フッター（白 → 黒） */
+/* 🌿 フッター */
 .footer{
 text-align:center;
 padding:40px 20px 60px;
@@ -162,11 +149,6 @@ background:#222;
 color:white;
 text-decoration:none;
 font-size:14px;
-transition:.2s;
-}
-
-.footer a:hover{
-background:#444;
 }
 
 </style>
@@ -174,18 +156,18 @@ background:#444;
 
 <body>
 
-<!-- 🌿 ヘッダー -->
+<!-- ヘッダー -->
 <div class="header">
   <h1>本との出会いは、たった30秒で変わる</h1>
   <p>読む前に、ちょっとだけ覗いてみる。</p>
 </div>
 
-<!-- 🌿 メイン -->
+<!-- メイン -->
 <div class="container">
   <div class="grid" id="grid"></div>
 </div>
 
-<!-- 🌿 フッター -->
+<!-- フッター -->
 <div class="footer">
   <a href="ここに一覧ページURL">他の本も見る</a>
 </div>
@@ -200,7 +182,11 @@ fetch(API_URL)
 
   const grid = document.getElementById("grid");
 
-  data.slice(0,6).forEach(item => {
+  // 🔥 ここが今回の重要ポイント
+  const isMobile = window.innerWidth <= 767;
+  const displayCount = isMobile ? 3 : 6;
+
+  data.slice(0, displayCount).forEach(item => {
 
     const card = document.createElement("div");
     card.className = "card";
