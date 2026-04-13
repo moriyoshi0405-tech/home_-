@@ -251,7 +251,7 @@ function createReelCard(card, item){
 
       setTimeout(()=>{
 
-        text.innerHTML = convertMarkdown(item.reel[index] || "");
+        text.innerHTML = item.reel[index] || "";
         text.classList.add("show");
 
         index++;
