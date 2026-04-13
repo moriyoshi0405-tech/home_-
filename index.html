@@ -151,6 +151,18 @@ text-decoration:none;
 font-size:14px;
 }
 
+/* 🌿 Markdown装飾 */
+.big{
+  font-size:18px;
+  font-weight:700;
+  line-height:1.4;
+}
+
+.em{
+  font-weight:700;
+  color:#ff6b6b;
+}
+
 </style>
 </head>
 
@@ -239,7 +251,7 @@ function createReelCard(card, item){
 
       setTimeout(()=>{
 
-        text.innerHTML = item.reel[index] || "";
+        text.innerHTML = convertMarkdown(item.reel[index] || "");
         text.classList.add("show");
 
         index++;
@@ -261,6 +273,25 @@ function createReelCard(card, item){
   showIntro();
 
 }
+
+function convertMarkdown(text){
+
+  if(!text) return "";
+
+  // HTMLエスケープ
+  text = text.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+  // # 見出し
+  text = text.replace(/^# (.*)$/gm,'<div class="big">$1</div>');
+
+  // **強調**
+  text = text.replace(/\*\*(.*?)\*\*/g,'<span class="em">$1</span>');
+
+  // 改行
+  text = text.replace(/\n/g,"<br>");
+
+  return text;
+}  
 
 </script>
 
