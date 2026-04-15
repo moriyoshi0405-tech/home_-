@@ -231,10 +231,21 @@ fetch(API_URL)
 .then(res => res.json())
 .then(data => {
 
-  allData = data;
+  const grid = document.getElementById("grid");
+  grid.innerHTML = ""; // ← 必ず初期化
 
-  renderTags(data);
-  render(data);
+  const isMobile = window.innerWidth <= 767;
+  const displayCount = isMobile ? 4 : 6;
+
+  data.slice(0, displayCount).forEach(item => {
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    grid.appendChild(card);
+    createReelCard(card, item);
+
+  });
 
 });
 
@@ -306,8 +317,8 @@ function render(data){
 
   data.forEach(item => {
 
-    const card = document.createElement("div");
-    card.className = "card";
+    const grid = document.getElementById("grid");
+    grid.innerHTML = ""; // ← これ入れる
 
     // 🆕 New判定
     if(item.created){
