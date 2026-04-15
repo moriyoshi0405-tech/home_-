@@ -242,6 +242,16 @@ fetch(API_URL)
     const card = document.createElement("div");
     card.className = "card";
 
+      if(item.created){
+    const diff = (Date.now() - new Date(item.created)) / (1000*60*60*24);
+    if(diff <= 7){
+      const badge = document.createElement("div");
+      badge.className = "new";
+      badge.textContent = "New!";
+      card.appendChild(badge);
+    }
+  }
+
     grid.appendChild(card);
     createReelCard(card, item);
 
