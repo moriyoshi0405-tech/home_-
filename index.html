@@ -63,12 +63,18 @@ display:grid;
 gap:16px;
 }
 
-@media (max-width:767px){
-.grid{ grid-template-columns:repeat(2,1fr); }
+/* 📱 スマホ：2列固定 */
+@media (max-width: 767px){
+.grid{
+grid-template-columns: repeat(2, 1fr);
+}
 }
 
-@media (min-width:768px){
-.grid{ grid-template-columns:repeat(3,1fr); }
+/* 🖥 PC：3列固定 */
+@media (min-width: 768px){
+.grid{
+grid-template-columns: repeat(3, 1fr);
+}
 }
 
 /* 🌿 カード */
@@ -156,7 +162,7 @@ background:#222;
 color:#fff;
 }
 
-/* 👇 もっと見る */
+/* もっと見る */
 .more{
 text-align:center;
 margin-top:30px;
@@ -196,9 +202,11 @@ font-size:12px;
 
   <div class="grid" id="grid"></div>
 
-  <!-- 👇 もっと見る -->
+  <!-- 👇 修正済み：新しいタブで開く -->
   <div class="more">
-    <a href="list.html">もっと見る →</a>
+    <a href="https://moriyoshi0405-tech.github.io/reel_All/" target="_blank">
+      もっと見る →
+    </a>
   </div>
 
 </div>
@@ -211,9 +219,9 @@ let allData = [];
 let activeTag = null;
 let sortMode = "default";
 
-// 👇 画面幅で表示数を変更
+// 👇 表示数（グリッドに最適化）
 function getLimit(){
-  return window.innerWidth < 768 ? 4 : 9;
+  return window.innerWidth < 768 ? 4 : 6; // スマホ2列×2行 / PC3列×2行
 }
 
 fetch(API_URL)
@@ -297,13 +305,12 @@ function filter(){
     filtered.sort((a,b)=> a.order - b.order);
   }
 
-  // 👇 画面に応じて制限
   const limited = filtered.slice(0, getLimit());
 
   render(limited);
 }
 
-// 👇 リサイズ時も再描画
+// リサイズ対応
 window.addEventListener("resize", filter);
 
 // 描画
@@ -324,7 +331,7 @@ function render(data){
 
 }
 
-// リール（そのまま）
+// リール
 function createReelCard(card, item){
 
   let index = 0;
